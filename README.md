@@ -18,36 +18,36 @@ FLAlertLayer::create(
 ## Supported Color Tags
 
 For convenience, this mod reimplements Geode's default color tags using the "x" prefix. The original "c" tags still work though.
-
-* <xp1> - Player Color 1  
-* <xp2> - Player Color 2  
-* <xpg> - Player Glow Color  
-* <xdr> - Dark Red  
-* <xr> - Red  
-* <xrb> - Bright Red  
-* <xro> - Crimson  
-* <xob> - Burnt Orange  
-* <xo> - Orange  
-* <xs> - Gold  
-* <xy> - Yellow  
-* <xc> - Light Yellow  
-* <xav> - Acid Green  
-* <xg> - Green  
-* <xh> - Forest Green  
-* <xnv> - Midnight Blue  
-* <xb> - Royal Blue  
-* <xj> - Cyan  
-* <xl> - Aqua  
-* <xf> - Light Blue  
-* <xa> - Magenta  
-* <xd> - Light Pink  
-* <xp> - Pink  
-* <xv> - Orchid  
-* <xk> - Black  
-* <xgr> - Gray  
-* <xsl> - Silver  
-* <xbg> - Beige  
-* <xrnbw> - Rainbow Gradient
-
+```
+<xp1> - Player Color 1  
+<xp2> - Player Color 2  
+<xpg> - Player Glow Color  
+<xdr> - Dark Red  
+<xr> - Red  
+<xrb> - Bright Red  
+<xro> - Crimson  
+<xob> - Burnt Orange  
+<xo> - Orange  
+<xs> - Gold  
+<xy> - Yellow  
+<xc> - Light Yellow  
+<xav> - Acid Green  
+<xg> - Green  
+<xh> - Forest Green  
+<xnv> - Midnight Blue  
+<xb> - Royal Blue  
+<xj> - Cyan  
+<xl> - Aqua  
+<xf> - Light Blue  
+<xa> - Magenta  
+<xd> - Light Pink  
+<xp> - Pink  
+<xv> - Orchid  
+<xk> - Black  
+<xgr> - Gray  
+<xsl> - Silver  
+<xbg> - Beige  
+<xrnbw> - Rainbow Gradient
+```
 
 
