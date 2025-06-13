@@ -12,6 +12,9 @@
 	"developer": "Natrium",
 	"description": "Expands the classic color tags by adding more default ones",
 	"tags": [ "developer" ],
+	"dependencies": {
+		"geode.node-ids": ">=v1.4.0"
+	},
 	"resources": {
 		"sprites": [
 			"src/promo.png"

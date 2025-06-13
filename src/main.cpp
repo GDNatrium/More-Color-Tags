@@ -65,28 +65,29 @@ class $modify(FLAlertLayer) {
 
 		size_t pos = 0;
 		cocos2d::ccColor3B currentColor = cocos2d::ccc3(255, 255, 255);
+		std::string desc = p2;
 
-		while (pos < p2.length()) {
-			auto tagStart = p2.find("<", pos);
+		while (pos < desc.length()) {
+			auto tagStart = desc.find("<", pos);
 			if (tagStart == std::string::npos) {
-				newDesc += p2.substr(pos);
+				newDesc += desc.substr(pos);
 				break;
 			}
 
-			newDesc += p2.substr(pos, tagStart - pos);
+			newDesc += desc.substr(pos, tagStart - pos);
 
-			auto tagEnd = p2.find(">", tagStart);
+			auto tagEnd = desc.find(">", tagStart);
 			if (tagEnd == std::string::npos) break;
 
-			std::string tagContent = p2.substr(tagStart + 1, tagEnd - tagStart - 1);
+			std::string tagContent = desc.substr(tagStart + 1, tagEnd - tagStart - 1);
 
 			if (tagContent.starts_with("x")) {
 				if (!tagContent.empty() && m_fields->colorMap.contains(tagContent)) {
 					size_t colorStart = newDesc.length();
 					pos = tagEnd + 1;
 
-					auto closeTag = p2.find("</x>", pos);
-					std::string inner = p2.substr(pos, closeTag - pos);
+					auto closeTag = desc.find("</x>", pos);
+					std::string inner = desc.substr(pos, closeTag - pos);
 					newDesc += inner;
 
 					tags.push_back(ColorTag{
@@ -95,41 +96,35 @@ class $modify(FLAlertLayer) {
 						.end = colorStart + inner.length()
 						});
 
-					pos = closeTag != std::string::npos ? closeTag + 4 : p2.length();
+					pos = closeTag != std::string::npos ? closeTag + 4 : desc.length();
 					continue;
 				}
 			}
 
-			newDesc += p2.substr(tagStart, tagEnd - tagStart + 1);
+			newDesc += desc.substr(tagStart, tagEnd - tagStart + 1);
 			pos = tagEnd + 1;
 		}
 
 		if (!FLAlertLayer::init(p0, p1, newDesc, p3, p4, p5, p6, p7, p8)) return false;
 
-		auto textArea = m_mainLayer->getChildByID("content-text-area");
+		auto textArea = static_cast<TextArea*>(m_mainLayer->getChildByID("content-text-area"));
 		if (!textArea) return true;
 
-		auto mbf = textArea->getChildByType<MultilineBitmapFont>(0);
+		auto mbf = textArea->m_label;
 		if (!mbf) return true;
 
 		for (const auto& tag : tags) {
 			size_t globalIndex = 0;
 
 			if (tag.name == "xrnbw") {
-				for (auto label : CCArrayExt<CCLabelBMFont*>(mbf->getChildren())) {
-					if (!label) continue;
-
-					auto glyphs = CCArrayExt<CCFontSprite*>(label->getChildren());
-					for (auto glyph : glyphs) {
-						if (globalIndex >= tag.start && globalIndex < tag.end) {
-							if (glyph) {
-								size_t colorIdx = (globalIndex - tag.start) % m_fields->rainbowColors.size();
-								glyph->setColor(m_fields->rainbowColors[colorIdx]);
-							}
+				for (auto glyph : CCArrayExt<CCFontSprite*>(mbf->m_characters)) {
+					if (globalIndex >= tag.start && globalIndex < tag.end) {
+						if (glyph) {
+							size_t colorIdx = (globalIndex - tag.start) % m_fields->rainbowColors.size();
+							glyph->setColor(m_fields->rainbowColors[colorIdx]);
 						}
-						globalIndex++;
-						if (globalIndex >= tag.end) break;
 					}
+					globalIndex++;
 					if (globalIndex >= tag.end) break;
 				}
 			}
@@ -137,17 +132,11 @@ class $modify(FLAlertLayer) {
 				auto it = m_fields->colorMap.find(tag.name);
 				cocos2d::ccColor3B tagColor = (it != m_fields->colorMap.end()) ? it->second : cocos2d::ccc3(255, 0, 0);
 
-				for (auto label : CCArrayExt<CCLabelBMFont*>(mbf->getChildren())) {
-					if (!label) continue;
-
-					auto glyphs = CCArrayExt<CCFontSprite*>(label->getChildren());
-					for (auto glyph : glyphs) {
-						if (globalIndex >= tag.start && globalIndex < tag.end) {
-							if (glyph) glyph->setColor(tagColor);
-						}
-						globalIndex++;
-						if (globalIndex >= tag.end) break;
+				for (auto glyph : CCArrayExt<CCFontSprite*>(mbf->m_characters)) {
+					if (globalIndex >= tag.start && globalIndex < tag.end) {
+						if (glyph) glyph->setColor(tagColor);
 					}
+					globalIndex++;
 					if (globalIndex >= tag.end) break;
 				}
 			}
